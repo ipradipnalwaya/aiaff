@@ -40,7 +40,7 @@ Preferred communication style: Simple, everyday language.
 - `/affiliate-disclaimer` - Affiliate marketing compliance information
 
 **Layout Pattern**: 
-- Landing page: Modern full-width hero section with gradient backgrounds, shadow effects, and elevated feature cards. Features sticky header with backdrop blur, large prominent CTA button with shadow effects, and three feature cards with hover animations.
+- Landing page: Modern full-width hero section with gradient backgrounds, shadow effects, and elevated feature cards. Features sticky header with backdrop blur, large prominent CTA button with shadow effects, separate Chrome and Edge extension download buttons, and three feature cards highlighting rate limiting, security, and browser extension support.
 - Tool page: Two-column responsive layout (input form on left, generated output on right) on larger screens, stacking vertically on mobile devices
 - Legal pages: Single-column content layout with navigation header
 
@@ -60,6 +60,13 @@ Preferred communication style: Simple, everyday language.
 5. Return both plain text and HTML-formatted versions
 
 **Web Scraping**: Custom scraper using Cheerio for HTML parsing, targeting common content containers (article, main, content classes) and cleaning non-content elements (scripts, styles, navigation).
+
+**Security Features**:
+- Rate limiting (20 requests/15min for content generation, 100 requests/15min for other endpoints)
+- CORS protection (allows browser extensions and authorized origins)
+- Input validation with Zod schemas
+- HTTPS encryption (automatic on Render.com)
+- Environment variable protection for API keys
 
 **Error Handling**: Centralized error handling with structured error responses and logging.
 
@@ -94,6 +101,20 @@ Preferred communication style: Simple, everyday language.
 **API Validation**: Server-side re-validation of all inputs before processing.
 
 **Type Safety**: Shared TypeScript types between frontend and backend, generated from Zod schemas using `z.infer`.
+
+### Deployment
+
+**Production Environment**: Render.com
+- URL: https://genaimagic.onrender.com
+- Free tier hosting with PostgreSQL database
+- Automatic HTTPS and SSL certificates
+- Database migrations via HTTP endpoint (`/api/setup-database`)
+
+**Environment Variables Required**:
+- `GEMINI_API_KEY`: Google Gemini AI API key for content generation
+- `DATABASE_URL`: PostgreSQL connection string (Neon serverless)
+- `SESSION_SECRET`: Session encryption key
+- `DATABASE_SETUP_KEY` (optional): Security key for database setup endpoint
 
 ## External Dependencies
 

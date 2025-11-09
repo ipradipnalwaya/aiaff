@@ -1,5 +1,6 @@
 import { Link } from "wouter";
-import { Sparkles, Zap, FileText, Globe } from "lucide-react";
+import { Sparkles, Zap, ShieldCheck, Gauge, Puzzle, Download } from "lucide-react";
+import { SiGooglechrome } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -43,7 +44,7 @@ export default function Landing() {
             No signup. No credit card. Just enter your product info, add your sources, and get ready-to-publish blog posts in seconds.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap">
             <Link href="/app" data-testid="link-get-started">
               <Button 
                 size="lg" 
@@ -54,58 +55,83 @@ export default function Landing() {
                 Start Creating Free
               </Button>
             </Link>
-            <a href="/extension.zip" download data-testid="link-download-extension">
+            
+            <div className="flex gap-3 flex-wrap justify-center">
               <Button 
                 size="lg" 
                 variant="outline"
-                className="gap-2 text-lg shadow-lg hover:shadow-xl transition-shadow duration-300" 
-                data-testid="button-download-extension"
+                className="gap-2 text-base shadow-lg hover:shadow-xl transition-shadow duration-300" 
+                data-testid="button-download-chrome"
+                asChild
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                Download Extension
+                <a 
+                  href="https://chrome.google.com/webstore" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="Download Chrome Extension"
+                >
+                  <SiGooglechrome className="w-5 h-5" />
+                  Chrome Extension
+                </a>
               </Button>
-            </a>
+              
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="gap-2 text-base shadow-lg hover:shadow-xl transition-shadow duration-300" 
+                data-testid="button-download-edge"
+                asChild
+              >
+                <a 
+                  href="https://microsoftedge.microsoft.com/addons" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="Download Edge Extension"
+                >
+                  <Download className="w-5 h-5" />
+                  Edge Extension
+                </a>
+              </Button>
+            </div>
           </div>
 
           <div className="mt-24 grid gap-6 md:grid-cols-3">
             <Card 
               className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-primary/10" 
-              data-testid="feature-ai-powered"
+              data-testid="feature-rate-limiting"
             >
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center mb-4 shadow-lg">
-                <Sparkles className="w-6 h-6 text-primary-foreground" />
+                <Gauge className="w-6 h-6 text-primary-foreground" />
               </div>
-              <h3 className="text-lg font-semibold mb-3">GenAiMagic AI</h3>
+              <h3 className="text-lg font-semibold mb-3">Intelligent Rate Limiting</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Powered by our trained AI agent to create engaging, high-quality content optimized for conversions.
+                Built-in API protection ensures fair usage for everyone while preventing abuse and maintaining service quality.
               </p>
             </Card>
 
             <Card 
               className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-primary/10" 
-              data-testid="feature-multi-source"
+              data-testid="feature-security"
             >
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center mb-4 shadow-lg">
-                <Globe className="w-6 h-6 text-primary-foreground" />
+                <ShieldCheck className="w-6 h-6 text-primary-foreground" />
               </div>
-              <h3 className="text-lg font-semibold mb-3">Multi-Source Research</h3>
+              <h3 className="text-lg font-semibold mb-3">Hardened Security Layer</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Add URLs or paste text from reviews, specs, and product pages. The AI synthesizes everything.
+                CORS protection, input validation, and HTTPS encryption keep your data safe while you create content.
               </p>
             </Card>
 
             <Card 
               className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-primary/10" 
-              data-testid="feature-instant-export"
+              data-testid="feature-browser-extension"
             >
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center mb-4 shadow-lg">
-                <FileText className="w-6 h-6 text-primary-foreground" />
+                <Puzzle className="w-6 h-6 text-primary-foreground" />
               </div>
-              <h3 className="text-lg font-semibold mb-3">Instant Export</h3>
+              <h3 className="text-lg font-semibold mb-3">Browser Extension Ready</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Get plain text and HTML versions ready for WordPress, Medium, or anywhere you publish.
+                Transform any webpage into affiliate content instantly with our Chrome and Edge extensions—one click away.
               </p>
             </Card>
           </div>
