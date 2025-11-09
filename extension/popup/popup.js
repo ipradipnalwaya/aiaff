@@ -1,10 +1,12 @@
-let API_URL = 'https://genaimagic.replit.app';
+// Production API URL
+const DEFAULT_API_URL = 'https://genaimagic.onrender.com';
+let API_URL = DEFAULT_API_URL;
 let extractedData = null;
 
 async function getApiUrl() {
   return new Promise((resolve) => {
     chrome.storage.local.get(['apiUrl'], (result) => {
-      resolve(result.apiUrl || 'https://genaimagic.replit.app');
+      resolve(result.apiUrl || DEFAULT_API_URL);
     });
   });
 }

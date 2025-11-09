@@ -60,7 +60,7 @@ To use your own API endpoint:
    ```
 4. Reload the extension
 
-**Note**: The default API URL is https://genaimagic.replit.app
+**Note**: The default API URL is https://genaimagic.onrender.com
 
 ## How to Use
 

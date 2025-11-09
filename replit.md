@@ -110,7 +110,8 @@ Preferred communication style: Simple, everyday language.
 **Neon Serverless Postgres** (`@neondatabase/serverless`):
 - PostgreSQL database provider optimized for serverless environments
 - Connected via `DATABASE_URL` environment variable
-- Currently configured but not actively used (app uses in-memory storage)
+- Configured with WebSocket constructor (`ws` package) for Node.js compatibility
+- Actively used for persistent storage (extension sessions, user data)
 
 **Drizzle ORM** (`drizzle-orm`, `drizzle-kit`):
 - Type-safe ORM for PostgreSQL
