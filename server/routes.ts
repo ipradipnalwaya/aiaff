@@ -123,6 +123,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Database setup endpoint (call once to create tables)
+  app.post("/api/setup-database", async (req, res) => {
+    try {
+      const { setupKey } = req.body;
+      
+      // Simple security: require a setup key
+      if (setupKey !== process.env.DATABASE_SETUP_KEY && setupKey !== "setup-genaimagic-2024") {
+        return res.status(403).json({ error: "Invalid setup key" });
+      }
+      
+      // Import db directly to run migrations
+      const { db: database } = await import("./db");
+      const { sql } = await import("drizzle-orm");
+      
+      // Create tables using raw SQL from migration
+      await database.execute(sql`
+        CREATE TABLE IF NOT EXISTS "extension_sessions" (
+          "id" text PRIMARY KEY NOT NULL,
+          "product_name" text NOT NULL,
+          "plain_text" text NOT NULL,
+          "html" text NOT NULL,
+          "request_payload" json NOT NULL,
+          "created_at" timestamp DEFAULT now() NOT NULL
+        );
+      `);
+      
+      await database.execute(sql`
+        CREATE TABLE IF NOT EXISTS "users" (
+          "id" text PRIMARY KEY NOT NULL,
+          "username" text NOT NULL,
+          "password" text NOT NULL,
+          CONSTRAINT "users_username_unique" UNIQUE("username")
+        );
+      `);
+      
+      res.json({ 
+        success: true, 
+        message: "Database tables created successfully" 
+      });
+    } catch (error) {
+      console.error("Database setup error:", error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : "Failed to setup database" 
+      });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

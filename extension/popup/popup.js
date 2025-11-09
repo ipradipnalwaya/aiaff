@@ -103,8 +103,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       if (!generateResponse.ok) {
-        const error = await generateResponse.json();
-        throw new Error(error.error || 'Failed to generate content');
+        let errorMessage = 'Failed to generate content';
+        try {
+          const error = await generateResponse.json();
+          errorMessage = error.error || errorMessage;
+          if (error.details) {
+            console.error('Validation errors:', error.details);
+          }
+        } catch (e) {
+          const text = await generateResponse.text();
+          console.error('Error response:', text);
+          errorMessage = `Server error (${generateResponse.status}): ${text.slice(0, 100)}`;
+        }
+        throw new Error(errorMessage);
       }
 
       const result = await generateResponse.json();
