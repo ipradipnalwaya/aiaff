@@ -32,6 +32,11 @@ app.use(cors({
       return callback(null, true);
     }
     
+    // Allow Chrome and Edge extensions
+    if (origin && (origin.startsWith('chrome-extension://') || origin.startsWith('moz-extension://'))) {
+      return callback(null, true);
+    }
+    
     // In production, check allowed origins
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
