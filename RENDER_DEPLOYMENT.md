@@ -64,8 +64,10 @@ Render will auto-detect settings from `render.yaml`, but verify:
 - **Runtime**: Node
 - **Build Command**: 
   ```bash
-  npm install && npm run build && cd client && npm install && npm run build && cd ..
+  npm ci --include=dev && npm run build && cd client && npm ci --include=dev && npm run build && cd ..
   ```
+  
+  **Note**: The `--include=dev` flag is required because Render sets `NODE_ENV=production` by default, which would skip devDependencies (like `vite` and `esbuild` needed for building).
 - **Start Command**: 
   ```bash
   npm run start

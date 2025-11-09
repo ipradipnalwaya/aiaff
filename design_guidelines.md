@@ -1,4 +1,4 @@
-# Design Guidelines: Gemini AI Affiliate Content Creator
+# Design Guidelines: GenAiMagic Affiliate Content Creator
 
 ## Design Approach
 

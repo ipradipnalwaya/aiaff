@@ -2,7 +2,7 @@
 
 ## Overview
 
-genaimagic is a web application that transforms product data into SEO-optimized affiliate blog content using Google's Gemini AI. The platform allows users to input product information, provide research materials (via text or URLs), and generate compelling, conversion-focused blog posts in both plain text and HTML formats.
+genaimagic is a web application that transforms product data into SEO-optimized affiliate blog content using our GenAiMagic trained AI Agent. The platform allows users to input product information, provide research materials (via text or URLs), and generate compelling, conversion-focused blog posts in both plain text and HTML formats.
 
 The application follows a streamlined workflow: users enter product details → provide source material → configure content preferences → receive AI-generated affiliate content ready for publishing.
 
@@ -24,9 +24,18 @@ Preferred communication style: Simple, everyday language.
 
 **State Management**: TanStack Query (React Query) for server state management with custom query client configuration. Form state managed by React Hook Form with Zod schema validation.
 
-**Routing**: Wouter for lightweight client-side routing.
+**Routing**: Wouter for lightweight client-side routing with the following page structure:
+- `/` - Landing page with feature showcase and navigation
+- `/app` - Main content generation tool
+- `/privacy` - Privacy Policy
+- `/terms` - Terms of Use
+- `/disclaimer` - General Disclaimer
+- `/affiliate-disclaimer` - Affiliate marketing compliance information
 
-**Layout Pattern**: Two-column responsive layout (input form on left, generated output on right) on larger screens, stacking vertically on mobile devices.
+**Layout Pattern**: 
+- Landing page: Modern full-width hero section with gradient backgrounds, shadow effects, and elevated feature cards. Features sticky header with backdrop blur, large prominent CTA button with shadow effects, and three feature cards with hover animations.
+- Tool page: Two-column responsive layout (input form on left, generated output on right) on larger screens, stacking vertically on mobile devices
+- Legal pages: Single-column content layout with navigation header
 
 ### Backend Architecture
 
