@@ -40,12 +40,16 @@ export function ContentOutput({ plainText, html, isGenerating }: ContentOutputPr
     }
   };
 
-  const downloadContent = (content: string, type: "txt" | "html") => {
+  const downloadContent = (content: string, type: "txt" | "html" | "md") => {
     try {
       const timestamp = new Date().toISOString().slice(0, 19).replace(/[-:]/g, '').replace('T', '-');
       const filename = `generated-content-${timestamp}.${type}`;
       
-      const blob = new Blob([content], { type: type === "txt" ? "text/plain" : "text/html" });
+      let mimeType = "text/plain";
+      if (type === "html") mimeType = "text/html";
+      else if (type === "md") mimeType = "text/markdown";
+      
+      const blob = new Blob([content], { type: mimeType });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -57,7 +61,7 @@ export function ContentOutput({ plainText, html, isGenerating }: ContentOutputPr
       
       toast({
         title: "Downloaded!",
-        description: `${type === "txt" ? "Plain text" : "HTML"} file saved as ${filename}`,
+        description: `File saved as ${filename}`,
       });
     } catch (err) {
       toast({
@@ -109,7 +113,7 @@ export function ContentOutput({ plainText, html, isGenerating }: ContentOutputPr
             </TabsTrigger>
           </TabsList>
           
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {activeTab === "plain" ? (
               <>
                 <Button
@@ -129,10 +133,19 @@ export function ContentOutput({ plainText, html, isGenerating }: ContentOutputPr
                   variant="outline"
                   size="sm"
                   onClick={() => downloadContent(plainText, "txt")}
-                  data-testid="button-download-plain"
+                  data-testid="button-download-txt"
                 >
                   <Download className="mr-2 h-4 w-4" />
-                  Download .txt
+                  .txt
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => downloadContent(plainText, "md")}
+                  data-testid="button-download-md"
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  .md
                 </Button>
               </>
             ) : (
@@ -157,7 +170,7 @@ export function ContentOutput({ plainText, html, isGenerating }: ContentOutputPr
                   data-testid="button-download-html"
                 >
                   <Download className="mr-2 h-4 w-4" />
-                  Download .html
+                  .html
                 </Button>
               </>
             )}

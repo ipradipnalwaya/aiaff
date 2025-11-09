@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GenAIMagic Content Rewriter</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      width: 400px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #ffffff;
+      color: #1a1a1a;
+    }
+    
+    .container {
+      padding: 20px;
+    }
+    
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    
+    .logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+    }
+    
+    .logo svg {
+      width: 20px;
+      height: 20px;
+      fill: white;
+    }
+    
+    h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+    
+    .status {
+      padding: 12px;
+      background: #f3f4f6;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+    
+    .status.success {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    
+    .status.error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: #374151;
+    }
+    
+    select, input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    
+    select:focus, input:focus {
+      outline: none;
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+    
+    .button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+    }
+    
+    .button:hover {
+      box-shadow: 0 6px 16px rgba(139, 92, 246, 0.5);
+    }
+    
+    .button:active {
+      transform: scale(0.98);
+    }
+    
+    .button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f4f6;
+      border-top: 3px solid #8b5cf6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 12px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .extracted-info {
+      margin-bottom: 16px;
+      padding: 12px;
+      background: #f9fafb;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    
+    .extracted-info strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #374151;
+    }
+    
+    .extracted-info p {
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 22l-.394-1.433a2.25 2.25 0 00-1.423-1.423L13.25 19l1.433-.394a2.25 2.25 0 001.423-1.423L16.5 16l.394 1.183a2.25 2.25 0 001.423 1.423L19.75 19l-1.433.394a2.25 2.25 0 00-1.423 1.423z"/>
+        </svg>
+      </div>
+      <h1>GenAIMagic.io</h1>
+    </div>
+    
+    <div id="statusMessage" class="status" style="display: none;"></div>
+    
+    <div id="mainForm">
+      <div id="extractedInfo" class="extracted-info" style="display: none;">
+        <strong>Detected Product:</strong>
+        <p id="productNameDisplay"></p>
+        <p id="productDescDisplay" style="font-size: 12px;"></p>
+      </div>
+      
+      <div class="form-group">
+        <label for="wordCount">Word Count</label>
+        <select id="wordCount">
+          <option value="800">800 words</option>
+          <option value="1000" selected>1000 words</option>
+          <option value="1500">1500 words</option>
+          <option value="2000">2000 words</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="tone">Tone</label>
+        <select id="tone">
+          <option value="professional" selected>Professional</option>
+          <option value="casual">Casual</option>
+          <option value="enthusiastic">Enthusiastic</option>
+          <option value="informative">Informative</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="targetAudience">Target Audience (Optional)</label>
+        <input type="text" id="targetAudience" placeholder="e.g., Tech enthusiasts, Parents">
+      </div>
+      
+      <button id="generateBtn" class="button">
+        Analyze & Generate Content
+      </button>
+    </div>
+    
+    <div id="loadingState" class="loading">
+      <div class="spinner"></div>
+      <p style="color: #6b7280; font-size: 14px;">Analyzing page and generating content...</p>
+      <p style="color: #9ca3af; font-size: 12px; margin-top: 8px;">This may take a moment</p>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

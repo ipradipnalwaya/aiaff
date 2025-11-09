@@ -7,24 +7,13 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="border-b backdrop-blur-sm bg-background/80 sticky top-0 z-50">
-        <div className="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
+        <div className="mx-auto max-w-6xl px-6 h-16 flex items-center">
           <Link href="/" className="flex items-center gap-2 hover-elevate rounded-md px-3 py-2 -ml-3" data-testid="link-home">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg">
               <Sparkles className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="text-xl font-semibold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">GenAIMagic.io</span>
           </Link>
-          <nav className="flex items-center gap-4 text-sm">
-            <Link href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors" data-testid="link-privacy">
-              Privacy
-            </Link>
-            <Link href="/terms" className="text-muted-foreground hover:text-foreground transition-colors" data-testid="link-terms">
-              Terms
-            </Link>
-            <Link href="/disclaimer" className="text-muted-foreground hover:text-foreground transition-colors" data-testid="link-disclaimer">
-              Disclaimer
-            </Link>
-          </nav>
         </div>
       </header>
 
@@ -54,16 +43,31 @@ export default function Landing() {
             No signup. No credit card. Just enter your product info, add your sources, and get ready-to-publish blog posts in seconds.
           </p>
 
-          <Link href="/app" data-testid="link-get-started">
-            <Button 
-              size="lg" 
-              className="gap-2 text-lg shadow-2xl hover:shadow-primary/25 transition-shadow duration-300" 
-              data-testid="button-get-started"
-            >
-              <Zap className="w-5 h-5" />
-              Start Creating Free
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link href="/app" data-testid="link-get-started">
+              <Button 
+                size="lg" 
+                className="gap-2 text-lg shadow-2xl hover:shadow-primary/25 transition-shadow duration-300" 
+                data-testid="button-get-started"
+              >
+                <Zap className="w-5 h-5" />
+                Start Creating Free
+              </Button>
+            </Link>
+            <a href="/extension.zip" download data-testid="link-download-extension">
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="gap-2 text-lg shadow-lg hover:shadow-xl transition-shadow duration-300" 
+                data-testid="button-download-extension"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download Extension
+              </Button>
+            </a>
+          </div>
 
           <div className="mt-24 grid gap-6 md:grid-cols-3">
             <Card 
