@@ -1,0 +1,144 @@
+# genaimagic - AI-Powered Affiliate Content Generator
+
+## Overview
+
+genaimagic is a web application that transforms product data into SEO-optimized affiliate blog content using Google's Gemini AI. The platform allows users to input product information, provide research materials (via text or URLs), and generate compelling, conversion-focused blog posts in both plain text and HTML formats.
+
+The application follows a streamlined workflow: users enter product details → provide source material → configure content preferences → receive AI-generated affiliate content ready for publishing.
+
+## User Preferences
+
+Preferred communication style: Simple, everyday language.
+
+## System Architecture
+
+### Frontend Architecture
+
+**Framework**: React 18 with TypeScript, using Vite as the build tool and development server.
+
+**UI Component System**: Implements shadcn/ui component library (New York style variant) built on top of Radix UI primitives. This provides accessible, customizable components with consistent styling through Tailwind CSS.
+
+**Design Philosophy**: Material Design 3 principles adapted for productivity tools, prioritizing clarity, efficient information hierarchy, and streamlined workflows. The design emphasizes utility over decoration with professional aesthetics suitable for content creators.
+
+**Styling**: Tailwind CSS with custom CSS variables for theming, supporting both light and dark modes. Typography uses Inter for UI elements and JetBrains Mono for code/output displays.
+
+**State Management**: TanStack Query (React Query) for server state management with custom query client configuration. Form state managed by React Hook Form with Zod schema validation.
+
+**Routing**: Wouter for lightweight client-side routing.
+
+**Layout Pattern**: Two-column responsive layout (input form on left, generated output on right) on larger screens, stacking vertically on mobile devices.
+
+### Backend Architecture
+
+**Runtime**: Node.js with Express server framework.
+
+**Language**: TypeScript with ESM module system.
+
+**API Design**: RESTful JSON API with a single primary endpoint (`/api/generate-content`) that accepts product information and returns generated content.
+
+**Content Generation Pipeline**:
+1. Validate input using Zod schemas
+2. Scrape resource URLs (if URL-based research is selected) using Cheerio
+3. Construct AI prompt with product details and research material
+4. Call Gemini AI API to generate content
+5. Return both plain text and HTML-formatted versions
+
+**Web Scraping**: Custom scraper using Cheerio for HTML parsing, targeting common content containers (article, main, content classes) and cleaning non-content elements (scripts, styles, navigation).
+
+**Error Handling**: Centralized error handling with structured error responses and logging.
+
+**Development Features**: Vite middleware integration for HMR, runtime error overlay, and development banner (Replit-specific tooling).
+
+### Database Architecture
+
+**ORM**: Drizzle ORM configured for PostgreSQL dialect with schema-first approach.
+
+**Schema Location**: Centralized in `shared/schema.ts` for type sharing between client and server.
+
+**Migration Strategy**: Migrations stored in `/migrations` directory, managed via Drizzle Kit.
+
+**Current Implementation**: Uses in-memory storage (`MemStorage` class) for user data during development. The database configuration is present but the schema primarily defines validation types rather than persistent models at this stage.
+
+**Design Pattern**: Interface-based storage abstraction (`IStorage`) allowing easy swapping between in-memory and database implementations.
+
+### Data Flow & Validation
+
+**Schema Validation**: Zod schemas defined in `shared/schema.ts` and reused across client and server for type safety and validation consistency.
+
+**Form Validation**: Client-side validation using React Hook Form with Zod resolver before submission.
+
+**API Validation**: Server-side re-validation of all inputs before processing.
+
+**Type Safety**: Shared TypeScript types between frontend and backend, generated from Zod schemas using `z.infer`.
+
+## External Dependencies
+
+### AI & Content Generation
+
+**Google Gemini AI** (`@google/genai`):
+- Primary content generation engine
+- Configured via `GEMINI_API_KEY` environment variable
+- Model recommendation: Use gemini-2.5-flash or gemini-2.5-pro series
+- Handles conversion of product data and research into SEO-optimized affiliate content
+
+### Database & Data Layer
+
+**Neon Serverless Postgres** (`@neondatabase/serverless`):
+- PostgreSQL database provider optimized for serverless environments
+- Connected via `DATABASE_URL` environment variable
+- Currently configured but not actively used (app uses in-memory storage)
+
+**Drizzle ORM** (`drizzle-orm`, `drizzle-kit`):
+- Type-safe ORM for PostgreSQL
+- Schema-first approach with migration tooling
+- Configuration in `drizzle.config.ts`
+
+### UI Component Libraries
+
+**Radix UI**: Comprehensive collection of accessible, unstyled UI primitives including:
+- Dialogs, dropdowns, popovers, tooltips
+- Form controls (checkbox, radio, select, slider, switch)
+- Navigation components (accordion, tabs, menubar)
+- All components prefixed with `@radix-ui/react-*`
+
+**shadcn/ui**: Pre-styled component system built on Radix UI with Tailwind CSS, configured for New York style variant with neutral base colors.
+
+### Styling & Design
+
+**Tailwind CSS** with PostCSS and Autoprefixer for utility-first styling with custom design tokens.
+
+**Class Variance Authority** (`class-variance-authority`): Type-safe variant generation for component styling.
+
+**Google Fonts**: Inter (UI font) and JetBrains Mono (monospace for code) loaded via CDN.
+
+### State Management & Data Fetching
+
+**TanStack Query** (`@tanstack/react-query`): Server state synchronization with custom fetch wrapper, configured for manual refetching and infinite stale time.
+
+**React Hook Form** (`react-hook-form`): Form state management with performance optimization through uncontrolled components.
+
+**Zod** (`zod`): Runtime type validation and schema definition, shared between client and server.
+
+### Web Scraping
+
+**Cheerio** (`cheerio`): Server-side HTML parsing for extracting content from research URLs, with jQuery-like API for DOM manipulation.
+
+### Development Tools
+
+**Vite**: Fast development server with HMR, optimized for React.
+
+**Replit Plugins**: Development tooling including cartographer (code navigation), dev banner, and runtime error modal for enhanced development experience.
+
+**TSX**: TypeScript execution for running the development server directly.
+
+### Routing & Navigation
+
+**Wouter**: Lightweight routing library (≈1KB) for client-side navigation, simpler alternative to React Router.
+
+### Build & Deployment
+
+**esbuild**: Used for production server bundling with ESM output format and external package handling.
+
+**Environment Variables Required**:
+- `GEMINI_API_KEY`: Google Gemini AI API key for content generation
+- `DATABASE_URL`: PostgreSQL connection string (configured but optional for current in-memory implementation)
