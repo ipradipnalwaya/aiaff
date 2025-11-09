@@ -1,9 +1,36 @@
 import express, { type Request, Response, NextFunction } from "express";
 import cors from "cors";
+import rateLimit from "express-rate-limit";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
+
+// Rate limiting to prevent abuse
+// Limit each IP to 20 requests per 15 minutes for content generation
+const contentGenerationLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20, // Limit each IP to 20 requests per window
+  message: {
+    error: "Too many requests from this IP, please try again after 15 minutes"
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+  // Skip rate limiting in development
+  skip: (req) => process.env.NODE_ENV === 'development',
+});
+
+// General API rate limiter - more permissive
+const generalApiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per window
+  message: {
+    error: "Too many requests, please try again later"
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => process.env.NODE_ENV === 'development',
+});
 
 // CORS configuration for production deployment
 // Build allowed origins list
@@ -90,7 +117,10 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  const server = await registerRoutes(app);
+  const server = await registerRoutes(app, {
+    contentGenerationLimiter,
+    generalApiLimiter,
+  });
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;

@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { generateAffiliateContent } from "./gemini";
 import { scrapeMultipleUrls } from "./scraper";
 import { z } from "zod";
+import type { RequestHandler } from "express";
 
 const generateContentSchema = z.object({
   productName: z.string().min(1, "Product name is required"),
@@ -28,9 +29,14 @@ const generateContentSchema = z.object({
   }
 );
 
-export async function registerRoutes(app: Express): Promise<Server> {
-  // Content generation endpoint
-  app.post("/api/generate-content", async (req, res) => {
+interface RateLimiters {
+  contentGenerationLimiter: RequestHandler;
+  generalApiLimiter: RequestHandler;
+}
+
+export async function registerRoutes(app: Express, rateLimiters: RateLimiters): Promise<Server> {
+  // Content generation endpoint - protected with strict rate limiting
+  app.post("/api/generate-content", rateLimiters.contentGenerationLimiter, async (req, res) => {
     try {
       const data = generateContentSchema.parse(req.body);
       
@@ -80,8 +86,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Extension session endpoints
-  app.post("/api/extension-sessions", async (req, res) => {
+  // Extension session endpoints - protected with general rate limiting
+  app.post("/api/extension-sessions", rateLimiters.generalApiLimiter, async (req, res) => {
     try {
       const { productName, plainText, html, requestPayload } = req.body;
       
