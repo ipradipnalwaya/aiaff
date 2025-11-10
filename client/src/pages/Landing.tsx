@@ -65,9 +65,8 @@ export default function Landing() {
                 asChild
               >
                 <a 
-                  href="https://chrome.google.com/webstore" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
+                  href="/extension.zip" 
+                  download="genaimagic-extension.zip"
                   aria-label="Download Chrome Extension"
                 >
                   <SiGooglechrome className="w-5 h-5" />
@@ -83,9 +82,8 @@ export default function Landing() {
                 asChild
               >
                 <a 
-                  href="https://microsoftedge.microsoft.com/addons" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
+                  href="/extension.zip" 
+                  download="genaimagic-extension.zip"
                   aria-label="Download Edge Extension"
                 >
                   <Download className="w-5 h-5" />
